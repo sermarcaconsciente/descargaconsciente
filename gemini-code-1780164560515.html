@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>App - Descarga Ejecutiva</title>
+<style>
+    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+    body {
+        font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+        background-color: #EEEDE1; /* Fondo Crema */
+        color: #333333;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        height: 100vh;
+    }
+    .app-header {
+        background-color: #A71039; /* Rojo Rubí */
+        color: white;
+        padding: 20px;
+        text-align: center;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        z-index: 10;
+    }
+    .app-header h1 { margin: 0; font-size: 20px; letter-spacing: 1px; }
+    .app-header p { margin: 5px 0 0 0; font-size: 12px; opacity: 0.9; }
+    
+    .app-content {
+        flex: 1;
+        overflow-y: auto;
+        padding: 20px;
+        background-color: #ffffff;
+        border-top-left-radius: 20px;
+        border-top-right-radius: 20px;
+        margin-top: -10px;
+        z-index: 20;
+    }
+    .form-group { margin-bottom: 25px; }
+    label {
+        display: block;
+        font-weight: bold;
+        margin-bottom: 10px;
+        color: #333;
+        font-size: 15px;
+    }
+    span.highlight { color: #F3C345; /* Amarillo */ font-size: 18px; margin-right: 5px; }
+    
+    textarea {
+        width: 100%;
+        padding: 15px;
+        border: 2px solid #EEEDE1;
+        border-radius: 12px;
+        font-family: inherit;
+        font-size: 15px;
+        resize: none;
+        background-color: #fafafa;
+        transition: all 0.3s ease;
+    }
+    textarea:focus {
+        outline: none;
+        border-color: #A71039;
+        background-color: #fff;
+        box-shadow: 0 4px 12px rgba(167, 16, 57, 0.1);
+    }
+    
+    .app-footer {
+        padding: 15px 20px 25px 20px;
+        background-color: #ffffff;
+        box-shadow: 0 -4px 10px rgba(0,0,0,0.05);
+    }
+    .btn-action {
+        background-color: #A71039;
+        color: #ffffff;
+        border: none;
+        padding: 16px;
+        width: 100%;
+        font-size: 16px;
+        font-weight: bold;
+        border-radius: 12px;
+        cursor: pointer;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+    }
+    .btn-action:active { background-color: #8a0c2e; transform: scale(0.98); }
+</style>
+</head>
+<body>
+
+    <div class="app-header">
+        <h1>DESCARGA EJECUTIVA</h1>
+        <p>Soberanía Creativa Consciente</p>
+    </div>
+
+    <div class="app-content">
+        <div class="form-group">
+            <label><span class="highlight">✦</span> 1. CREACIÓN: El Menú</label>
+            <textarea id="idea" rows="3" placeholder="¿Qué idea o proyecto quieres activar hoy?"></textarea>
+        </div>
+        <div class="form-group">
+            <label><span class="highlight">✦</span> 2. ACCIÓN: El Mapa</label>
+            <textarea id="pasos" rows="4" placeholder="Escribe los pasos lógicos para que ruede..."></textarea>
+        </div>
+        <div class="form-group">
+            <label><span class="highlight">✦</span> 3. DELEGACIÓN: El Equipo</label>
+            <textarea id="equipo" rows="3" placeholder="¿A quién le delegas la ejecución?"></textarea>
+        </div>
+    </div>
+
+    <div class="app-footer">
+        <button class="btn-action" onclick="enviarWhatsApp()">
+            📲 Enviar a mi Equipo
+        </button>
+    </div>
+
+    <script>
+        function enviarWhatsApp() {
+            let idea = document.getElementById('idea').value;
+            let pasos = document.getElementById('pasos').value;
+            let equipo = document.getElementById('equipo').value;
+            
+            let mensaje = `*🔥 NUEVA RUTA DE ACCIÓN*\n\n*1. LA IDEA:*\n${idea}\n\n*2. PASOS LÓGICOS:*\n${pasos}\n\n*3. DELEGADO A:*\n${equipo}`;
+            let url = `https://wa.me/?text=${encodeURIComponent(mensaje)}`;
+            
+            window.open(url, '_blank');
+        }
+    </script>
+</body>
+</html>
