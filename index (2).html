@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Descarga Consciente</title>
+<style>
+    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+    body {
+        font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+        background-color: #EEEDE1;
+        color: #333333;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+    }
+    .app-header {
+        background-color: #A71039;
+        color: white;
+        padding: 22px 20px;
+        text-align: center;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+    .app-header h1 { margin: 0; font-size: 18px; letter-spacing: 1.5px; font-weight: bold; }
+    .app-header p { margin: 6px 0 0 0; font-size: 11px; opacity: 0.85; }
+    
+    .app-content {
+        flex: 1;
+        padding: 25px 20px;
+        background-color: #ffffff;
+        border-top-left-radius: 24px;
+        border-top-right-radius: 24px;
+        margin-top: -12px;
+    }
+    .form-group { margin-bottom: 24px; }
+    label {
+        display: block;
+        font-weight: bold;
+        margin-bottom: 8px;
+        color: #333;
+        font-size: 14px;
+        text-transform: uppercase;
+    }
+    span.highlight { color: #A71039; font-size: 16px; margin-right: 5px; }
+    
+    select, textarea {
+        width: 100%;
+        padding: 14px;
+        border: 2px solid #EEEDE1;
+        border-radius: 12px;
+        font-family: inherit;
+        font-size: 15px;
+        background-color: #fafafa;
+    }
+    select { height: 50px; }
+    textarea { resize: none; }
+    
+    .btn-action {
+        background-color: #A71039;
+        color: #ffffff;
+        border: none;
+        padding: 16px;
+        width: 100%;
+        font-size: 15px;
+        font-weight: bold;
+        border-radius: 12px;
+        cursor: pointer;
+    }
+
+    .history-section {
+        margin-top: 35px;
+        border-top: 2px dashed #EEEDE1;
+        padding-top: 25px;
+    }
+    .history-title {
+        font-size: 16px;
+        font-weight: bold;
+        color: #A71039;
+        margin-bottom: 15px;
+        display: flex;
+        justify-content: space-between;
+    }
+    .btn-clear { background: none; border: none; color: #999; text-decoration: underline; cursor: pointer; }
+    .log-card {
+        background-color: #fafafa;
+        border: 1px solid #EEEDE1;
+        border-left: 4px solid #A71039;
+        border-radius: 8px;
+        padding: 15px;
+        margin-bottom: 15px;
+        font-size: 13px;
+    }
+    .log-date { font-weight: bold; color: #666; margin-bottom: 5px; }
+    .app-credits {
+        text-align: center;
+        font-size: 11px;
+        color: #999999;
+        margin-top: 35px;
+        padding-top: 15px;
+        border-top: 1px solid #f0f0f0;
+    }
+</style>
+</head>
+<body>
+
+    <div class="app-header">
+        <h1>DESCARGA CONSCIENTE</h1>
+        <p>Transmuta el Sabotaje en Acción Soberana</p>
+    </div>
+
+    <div class="app-content">
+        <div class="form-group">
+            <label><span class="highlight">✦</span> 1. El Impulso de Expansión</label>
+            <textarea id="accion" rows="2" placeholder="¿Qué paso vas a dar hoy?"></textarea>
+        </div>
+
+        <div class="form-group">
+            <label><span class="highlight">✦</span> 2. El Personaje Activo</label>
+            <select id="personaje">
+                <option value="Ninguno - Flujo Libre 🌿">Ninguno - Flujo Libre 🌿</option>
+                <option value="La Invisible 🎭">La Invisible 🎭 (Garganta / Callar)</option>
+                <option value="La Perfeccionista 🎭">La Perfeccionista 🎭 (Espalda / Detalle)</option>
+                <option value="La Impostora 🎭">La Impostora 🎭 (Pecho / Duda)</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label><span class="highlight">✦</span> 3. Registro Somático</label>
+            <textarea id="cuerpo" rows="2" placeholder="¿En qué parte lo sientes y cuál es el miedo?"></textarea>
+        </div>
+
+        <div class="form-group">
+            <label><span class="highlight">✦</span> 4. La Medicina Ejecutiva</label>
+            <textarea id="medicina" rows="3" placeholder="¿Cuál es la acción para avanzar?"></textarea>
+        </div>
+
+        <button class="btn-action" onclick="guardarYEnviar()">
+            📲 Guardar y Enviar Reporte
+        </button>
+
+        <div class="history-section">
+            <div class="history-title">
+                <span>📋 Mi Bitácora de la Semana</span>
+                <button class="btn-clear" onclick="borrarHistorial()">Reiniciar</button>
+            </div>
+            <div id="historial-container"></div>
+        </div>
+
+        <div class="app-credits">
+            Creado por @carolnataliaoficial - Todos los derechos reservados
+        </div>
+    </div>
+
+    <script>
+        window.onload = function() { cargarHistorial(); };
+
+        function guardarYEnviar() {
+            var accion = document.getElementById('accion').value;
+            var personaje = document.getElementById('personaje').value;
+            var cuerpo = document.getElementById('cuerpo').value;
+            var medicina = document.getElementById('medicina').value;
+            
+            if(!accion || !medicina) {
+                alert("Por favor completa la acción y tu medicina ejecutiva.");
+                return;
+            }
+            
+            var fecha = new Date().toLocaleDateString('es-ES', { weekday: 'long', day: 'numeric', month: 'short' });
+            var nuevoRegistro = { fecha: fecha, accion: accion, personaje: personaje, cuerpo: cuerpo, medicina: medicina };
+            
+            var historial = [];
+            try {
+                historial = JSON.parse(localStorage.getItem('bitacoraMMP')) || [];
+            } catch(e) { historial = []; }
+            
+            historial.unshift(nuevoRegistro);
+            localStorage.setItem('bitacoraMMP', JSON.stringify(historial));
+            
+            renderHistorial(historial);
+            
+            var mensaje = "*🌿 REGISTRO DE EXPANSIÓN CONSCIENTE*\n" +
+                          "*Fecha:* " + fecha + "\n\n" +
+                          "*1. IMPULSO:* " + accion + "\n" +
+                          "*2. PERSONAJE:* " + personaje + "\n" +
+                          "*3. CUERPO/NARRATIVA:* " + (cuerpo || 'Sin registrar') + "\n" +
+                          "*4. MEDICINA:* " + medicina;
+                          
+            var url = "https://wa.me/?text=" + encodeURIComponent(mensaje);
+            window.open(url, '_blank');
+
+            document.getElementById('accion').value = '';
+            document.getElementById('cuerpo').value = '';
+            document.getElementById('medicina').value = '';
+            document.getElementById('personaje').value = 'Ninguno - Flujo Libre 🌿';
+        }
+
+        function renderHistorial(historial) {
+            var container = document.getElementById('historial-container');
+            if(!container) return;
+            container.innerHTML = '';
+            
+            if(!historial || historial.length === 0) {
+                container.innerHTML = '<p style="color:#999; font-size:13px; font-style:italic;">No hay registros esta semana.</p>';
+                return;
+            }
+            
+            for(var i=0; i<historial.length; i++) {
+                var reg = historial[i];
+                var card = document.createElement('div');
+                card.className = 'log-card';
+                card.innerHTML = '<div class="log-date">' + reg.fecha.toUpperCase() + '</div>' +
+                                 '<div><strong>Impulso:</strong> ' + reg.accion + '</div>' +
+                                 '<div><strong>Personaje:</strong> ' + reg.personaje + '</div>' +
+                                 '<div><strong>Cuerpo:</strong> ' + (reg.cuerpo || 'N/A') + '</div>' +
+                                 '<div style="color:#A71039;"><strong>Medicina:</strong> ' + reg.medicina + '</div>';
+                container.appendChild(card);
+            }
+        }
+
+        function cargarHistorial() {
+            var historial = [];
+            try {
+                historial = JSON.parse(localStorage.getItem('bitacoraMMP')) || [];
+            } catch(e) { historial = []; }
+            renderHistorial(historial);
+        }
+
+        function borrarHistorial() {
+            if(confirm("¿Quieres limpiar tu bitácora?")) {
+                localStorage.removeItem('bitacoraMMP');
+                renderHistorial([]);
+            }
+        }
+    </script>
+</body>
+</html>
